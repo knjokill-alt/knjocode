@@ -1,54 +1,97 @@
-:root{
-    --bg:#050505;
-    --text:#ffffff;
-    --accent:#c0c0c0;
-}
-
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
 body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:Arial, Helvetica, sans-serif;
-    overflow-x:hidden;
+background:#050505;
+color:white;
+font-family:Arial,Helvetica,sans-serif;
+overflow-x:hidden;
 }
 
 .hero{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    text-align:center;
-    padding:20px;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+position:relative;
+padding:20px;
 }
 
-.hero h1{
-    font-size:clamp(3rem,8vw,7rem);
-    letter-spacing:8px;
-    text-transform:uppercase;
+.hero-overlay{
+position:absolute;
+inset:0;
+background:
+radial-gradient(circle at center,
+rgba(255,255,255,.08),
+transparent 60%);
 }
 
-.hero p{
-    margin-top:20px;
-    opacity:.7;
-    max-width:700px;
+.hero-content{
+position:relative;
+z-index:2;
+max-width:900px;
 }
 
-.btn{
-    margin-top:40px;
-    padding:15px 35px;
-    border:1px solid white;
-    color:white;
-    text-decoration:none;
-    transition:.3s;
+.status{
+font-size:.8rem;
+letter-spacing:4px;
+color:#7d7d7d;
+margin-bottom:20px;
 }
 
-.btn:hover{
-    background:white;
-    color:black;
+h1{
+font-size:clamp(3rem,10vw,8rem);
+letter-spacing:8px;
+font-weight:800;
+}
+
+h2{
+font-size:1.4rem;
+letter-spacing:6px;
+margin-top:10px;
+color:#888;
+}
+
+p{
+max-width:700px;
+margin:30px auto;
+line-height:1.8;
+color:#cfcfcf;
+}
+
+.hero-buttons{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.btn-primary,
+.btn-secondary{
+padding:15px 30px;
+text-decoration:none;
+border-radius:100px;
+transition:.3s;
+}
+
+.btn-primary{
+background:white;
+color:black;
+}
+
+.btn-primary:hover{
+transform:translateY(-3px);
+}
+
+.btn-secondary{
+border:1px solid #333;
+color:white;
+}
+
+.btn-secondary:hover{
+background:#111;
 }
