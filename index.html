@@ -34,36 +34,7 @@
     overflow-x:hidden;
     position:relative;
   }
-<!-- ========================================================= -->
-<!-- BLACK CODE™ BOOT SEQUENCE -->
-<!-- ========================================================= -->
 
-<div id="boot-screen">
-
-    <div class="boot-container">
-
-        <img src="assets/logo.webp" alt="KNJO SYSTEMS™" class="boot-logo">
-
-        <div class="boot-title">
-            KNJO SYSTEMS™
-        </div>
-
-        <div class="boot-subtitle">
-            BLACK CODE™ Operating System
-        </div>
-
-        <div id="boot-output" class="boot-output"></div>
-
-        <div class="boot-progress">
-
-            <div id="boot-bar" class="boot-bar"></div>
-
-        </div>
-
-    </div>
-
-</div>
-  
   .grid-bg{
     position:fixed; inset:0; z-index:0; pointer-events:none;
     background-image:
@@ -92,18 +63,104 @@
     color:var(--ink-dim);
   }
 
-  /* ===== BOOT SEQUENCE ===== */
+  /* ===== BOOT SEQUENCE — 3D NEON BLACK-LIGHT INTRO ===== */
   #boot{
     position:fixed; inset:0; z-index:999;
-    background:var(--void);
-    display:flex; flex-direction:column; align-items:flex-start; justify-content:center;
-    padding:8vw;
+    background:#000;
+    overflow:hidden;
+    perspective:1000px;
     font-family:var(--f-mono);
-    transition:opacity .6s ease, visibility .6s ease;
+    transition:opacity .8s ease, visibility .8s ease;
   }
   #boot.hidden{opacity:0; visibility:hidden; pointer-events:none;}
+
+  .neon-haze{
+    position:absolute; inset:0; pointer-events:none;
+    background:
+      radial-gradient(ellipse 55% 42% at 50% 34%, rgba(138,43,255,.38), transparent 70%),
+      radial-gradient(ellipse 70% 55% at 50% 105%, rgba(255,47,208,.28), transparent 70%),
+      radial-gradient(ellipse 60% 40% at 15% 90%, rgba(38,232,255,.14), transparent 70%);
+  }
+
+  .neon-floor{
+    position:absolute; left:-60%; right:-60%; bottom:0; height:56%;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(255,47,208,.4) 0 2px, transparent 2px 78px),
+      repeating-linear-gradient(0deg, rgba(38,232,255,.3) 0 2px, transparent 2px 54px);
+    background-position:0 0, 0 0;
+    transform:rotateX(78deg);
+    transform-origin:bottom;
+    mask-image:linear-gradient(to top, black, transparent 92%);
+    -webkit-mask-image:linear-gradient(to top, black, transparent 92%);
+    animation:floorMove 2.6s linear infinite;
+    opacity:.85;
+  }
+  @keyframes floorMove{ from{background-position:0 0, 0 0;} to{background-position:0 0, 0 54px;} }
+
+  .logo-rig{
+    position:absolute; top:40%; left:50%; transform:translate(-50%,-50%);
+    width:min(148px, 30vw);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .logo-ring{
+    position:absolute; width:340%; height:340%; border-radius:50%;
+    background:radial-gradient(circle, rgba(255,47,208,.3), rgba(138,43,255,.14) 45%, transparent 70%);
+    filter:blur(18px);
+    animation:ringPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes ringPulse{ 0%,100%{opacity:.5; transform:scale(.88);} 50%{opacity:1; transform:scale(1.06);} }
+
+  .boot-logo{
+    position:relative; width:100%; height:auto; display:block;
+    filter:
+      drop-shadow(0 0 6px rgba(255,255,255,.55))
+      drop-shadow(0 0 16px rgba(255,47,208,.85))
+      drop-shadow(0 0 32px rgba(38,232,255,.55));
+    transform:rotateX(70deg) translateZ(-260px) scale(.7);
+    opacity:0;
+    animation:
+      logoRise 1.1s .3s cubic-bezier(.16,1,.3,1) forwards,
+      logoFlicker 2.6s 1.4s ease-in-out infinite,
+      logoFloat 4.2s 1.4s ease-in-out infinite;
+  }
+  @keyframes logoRise{
+    0%{ opacity:0; transform:rotateX(70deg) translateZ(-260px) scale(.7); }
+    55%{ opacity:1; }
+    100%{ opacity:1; transform:rotateX(0deg) translateZ(0) scale(1); }
+  }
+  @keyframes logoFlicker{
+    0%,100%{ filter:drop-shadow(0 0 6px rgba(255,255,255,.55)) drop-shadow(0 0 16px rgba(255,47,208,.85)) drop-shadow(0 0 32px rgba(38,232,255,.55)); }
+    8%{ filter:drop-shadow(0 0 2px rgba(255,255,255,.2)) drop-shadow(0 0 5px rgba(255,47,208,.3)) drop-shadow(0 0 9px rgba(38,232,255,.2)); }
+    10%{ filter:drop-shadow(0 0 6px rgba(255,255,255,.55)) drop-shadow(0 0 16px rgba(255,47,208,.85)) drop-shadow(0 0 32px rgba(38,232,255,.55)); }
+    47%{ filter:drop-shadow(0 0 6px rgba(255,255,255,.55)) drop-shadow(0 0 16px rgba(255,47,208,.85)) drop-shadow(0 0 32px rgba(38,232,255,.55)); }
+    49%{ filter:drop-shadow(0 0 2px rgba(255,255,255,.15)) drop-shadow(0 0 4px rgba(255,47,208,.2)) drop-shadow(0 0 6px rgba(38,232,255,.15)); }
+    51%{ filter:drop-shadow(0 0 6px rgba(255,255,255,.55)) drop-shadow(0 0 16px rgba(255,47,208,.85)) drop-shadow(0 0 32px rgba(38,232,255,.55)); }
+  }
+  @keyframes logoFloat{
+    0%,100%{ transform:rotateX(0deg) translateZ(0) scale(1) translateY(0) rotateY(0deg); }
+    50%{ transform:rotateX(0deg) translateZ(0) scale(1) translateY(-7px) rotateY(7deg); }
+  }
+
+  .logo-wordmark{
+    position:absolute; top:calc(40% + 108px); left:50%; transform:translateX(-50%);
+    text-align:center; opacity:0;
+    animation:wordFade .6s 1.6s forwards;
+  }
+  .logo-wordmark .lw-main{
+    font-family:var(--f-display); font-weight:700; font-size:15px; letter-spacing:.06em; color:var(--ink);
+  }
+  .logo-wordmark .lw-main b{color:var(--status);}
+  .logo-wordmark small{
+    display:block; margin-top:6px; font-family:var(--f-mono); font-size:9px; letter-spacing:.18em;
+    color:var(--ink-dim); text-transform:uppercase;
+  }
+  @keyframes wordFade{ to{opacity:1;} }
+
+  .boot-console{
+    position:absolute; left:8vw; bottom:8vw; max-width:520px;
+  }
   .boot-line{
-    font-size:13px; color:var(--ink-dim); margin-bottom:8px;
+    font-size:12.5px; color:var(--ink-dim); margin-bottom:8px;
     opacity:0; transform:translateY(4px);
     animation:bootIn .4s forwards;
   }
@@ -115,7 +172,7 @@
   }
   .boot-bar{
     height:100%; width:0%; background:var(--status);
-    animation:bootBar 1.8s .6s forwards ease-out;
+    animation:bootBar 1.8s 1.2s forwards ease-out;
   }
   @keyframes bootBar{ to{width:100%;} }
   .boot-cursor{
@@ -124,8 +181,16 @@
   }
   @keyframes blink{ 50%{opacity:0;} }
 
+  @media (max-width:700px){
+    .logo-rig{top:30%;}
+    .logo-wordmark{top:calc(30% + 92px);}
+    .boot-console{left:6vw; bottom:6vw; max-width:80vw;}
+  }
+
   @media (prefers-reduced-motion: reduce){
-    #boot{display:none;}
+    .neon-floor, .logo-ring{animation:none;}
+    .boot-logo{animation:none; opacity:1; transform:none; filter:drop-shadow(0 0 10px rgba(255,47,208,.6));}
+    .logo-wordmark{animation:none; opacity:1;}
     .boot-line, .boot-bar{animation:none; opacity:1; width:100%;}
   }
 
@@ -372,641 +437,4 @@
   .mc-log-line .s{color:var(--status);}
 
   /* ===== TRUST CENTER ===== */
-  .trust-pillars{
-    display:flex; flex-direction:column; gap:64px; margin-top:54px;
-  }
-  .trust-pillar{ padding-top:40px; border-top:1px solid var(--steel); }
-  .trust-pillar:first-child{ border-top:none; padding-top:0; }
-  .trust-pillar h3{ font-size:21px; font-weight:600; margin-top:10px; }
-  .trust-pillar .pillar-lede{font-size:13.5px; color:var(--ink-dim); margin-top:10px; line-height:1.7; max-width:70ch;}
-  .trust-bullets{
-    list-style:none; display:flex; flex-wrap:wrap; gap:10px; margin-top:16px;
-  }
-  .trust-bullets li{
-    font-family:var(--f-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase;
-    color:var(--ink-dim); border:1px solid var(--steel); padding:6px 11px; border-radius:3px;
-  }
-  .arch-diagram{
-    display:flex; align-items:center; flex-wrap:wrap; gap:10px;
-    margin-top:24px; font-family:var(--f-mono); font-size:12px; letter-spacing:.04em;
-  }
-  .arch-diagram span{
-    border:1px solid var(--steel-2); background:var(--panel); color:var(--ink);
-    padding:9px 14px; border-radius:4px; text-transform:uppercase;
-  }
-  .arch-diagram i{ color:var(--status); font-style:normal; }
-  .arch-note{
-    font-family:var(--f-mono); font-size:12.5px; color:var(--ink-dim); line-height:1.7; margin-top:18px; max-width:70ch;
-  }
-  .audit-table{width:100%; border-collapse:collapse; margin-top:22px; font-family:var(--f-mono); font-size:12px;}
-  .audit-table th{
-    text-align:left; padding:10px 14px; color:var(--ink-faint); font-weight:400; letter-spacing:.08em;
-    text-transform:uppercase; font-size:10px; border-bottom:1px solid var(--steel);
-  }
-  .audit-table td{padding:14px; border-bottom:1px solid var(--steel); color:var(--ink-dim); vertical-align:top;}
-  .audit-table td.status-ok{color:var(--status); white-space:nowrap;}
-  .audit-table tr:last-child td{border-bottom:none;}
-
-  /* ===== CONTACT ===== */
-  #contact{border-bottom:none;}
-  .command-panel{
-    margin-top:50px; border:1px solid var(--steel); background:var(--panel); border-radius:6px; padding:38px;
-  }
-  @media (max-width:700px){ .command-panel{padding:22px;} }
-  .terminal{
-    margin-top:50px; background:var(--panel); border:1px solid var(--steel); border-radius:6px; overflow:hidden;
-  }
-  .term-head{
-    display:flex; align-items:center; gap:8px; padding:12px 16px; border-bottom:1px solid var(--steel); background:var(--panel-2);
-  }
-  .term-head .d{width:9px; height:9px; border-radius:50%; background:var(--steel-2);}
-  .term-head span{font-family:var(--f-mono); font-size:11px; color:var(--ink-dim); margin-left:8px;}
-  .term-body{padding:36px;}
-  .term-line{font-family:var(--f-mono); font-size:13px; color:var(--ink-dim); margin-bottom:22px;}
-  .term-line .prompt{color:var(--status); margin-right:8px;}
-  form{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:10px;}
-  form .full{grid-column:1/-1;}
-  label{font-family:var(--f-mono); font-size:10px; letter-spacing:.1em; color:var(--ink-dim); text-transform:uppercase; display:block; margin-bottom:8px;}
-  input, textarea{
-    width:100%; background:var(--void); border:1px solid var(--steel); color:var(--ink);
-    padding:13px 14px; font-family:var(--f-body); font-size:14px; border-radius:4px; transition:.2s;
-  }
-  input:focus, textarea:focus{border-color:var(--status);}
-  textarea{resize:vertical; min-height:100px;}
-  form button{margin-top:6px;}
-  @media (max-width:700px){ form{grid-template-columns:1fr;} }
-
-  footer{
-    padding:36px 8vw; display:flex; justify-content:space-between; align-items:center;
-    font-family:var(--f-mono); font-size:11px; color:var(--ink-faint); flex-wrap:wrap; gap:12px;
-  }
-  footer .foot-links{display:flex; gap:18px; flex-wrap:wrap;}
-
-  @media (max-width:860px){
-    #nav{position:fixed; top:56px; left:0; right:0; background:var(--void); border-bottom:1px solid var(--steel);
-      flex-direction:column; padding:10px; display:none;}
-    #nav.open{display:flex;}
-    #nav a{padding:14px;}
-    #navToggle{display:block;}
-    .sys-status .sep{display:none;}
-    section{padding:100px 6vw;}
-    .telemetry{grid-template-columns:1fr 1fr;}
-  }
-</style>
-</head>
-<body>
-
-<div class="grid-bg"></div>
-<div class="scanline"></div>
-
-<!-- BOOT SEQUENCE -->
-<div id="boot" role="status" aria-live="polite">
-  <div class="boot-line" style="animation-delay:.05s">BLACK CODE™ <span class="ok">v4.2</span> — PERCEPTION ENGINEERING OS</div>
-  <div class="boot-line" style="animation-delay:.25s">INITIALIZING KERNEL<span class="val">.......... OK</span></div>
-  <div class="boot-line" style="animation-delay:.45s">LOADING DEPLOYMENT<span class="val">: VELVER MOTOS ATLIXCO™</span></div>
-  <div class="boot-line" style="animation-delay:.65s">MOUNTING 13 SYSTEM MODULES<span class="ok"> ......... READY</span></div>
-  <div class="boot-line" style="animation-delay:.85s">ESTABLISHING SECURE CHANNEL<span class="ok"> ....... LINKED</span></div>
-  <div class="boot-line" style="animation-delay:1.05s">AGENCY RISK INDEX™<span class="ok"> .................. 4.6%</span></div>
-  <div class="boot-line" style="animation-delay:1.25s">SYSTEM STATUS: <span class="ok">OPERATIONAL</span><span class="boot-cursor"></span></div>
-  <div class="boot-bar-wrap"><div class="boot-bar"></div></div>
-</div>
-
-<!-- STATUS BAR -->
-<header id="statusbar">
-  <div class="brand">
-    <div class="mark"></div>
-    <div>
-      KNJO SYSTEMS™
-      <small>BLACK CODE™ · PERCEPTION ENGINEERING OS</small>
-    </div>
-  </div>
-  <nav id="nav">
-    <a href="#hero">Mission Control</a>
-    <a href="#ecosystem">Operating System</a>
-    <a href="#systems">Infrastructure</a>
-    <a href="#deployments">Deployments</a>
-    <a href="#trust-center">Trust Center</a>
-    <a href="#lab">Lab</a>
-    <a href="#contact">Command Channel</a>
-  </nav>
-  <div class="sys-status">
-    <span><span class="pulse-dot"></span> OPERATIONAL</span>
-    <span class="sep">·</span>
-    <span id="clock" class="mono"></span>
-  </div>
-  <button id="navToggle" aria-label="Abrir navegación">☰</button>
-</header>
-
-<main>
-
-  <!-- HERO / COMMAND BRIDGE -->
-  <section id="hero">
-    <div class="section-inner hero-grid">
-      <div class="hero-main">
-        <div class="eyebrow">KNJO SYSTEMS™ · BLACK CODE™ OS</div>
-        <h1>We Engineer Business<br>Operating Systems<sup class="tm">™</sup></h1>
-        <div class="hero-subhead mono">INFRASTRUCTURE, AUTOMATION & INTELLIGENCE LAYERS FOR ORGANIZATIONS THAT OPERATE AT SCALE™</div>
-        <p class="sub">No construimos páginas web. Diseñamos el sistema operativo que gobierna cada canal, automatización e insight de tu operación — desde el primer punto de contacto con un cliente hasta el reporte que llega a tu mesa de dirección.</p>
-        <div class="hero-cta">
-          <a href="#contact" class="btn btn-primary">Solicitar Auditoría de Sistemas</a>
-          <a href="#trust-center" class="btn btn-ghost">Ver Trust Center™</a>
-        </div>
-        <div class="telemetry">
-          <div class="tele-cell"><div class="num">13<span class="unit">MOD</span></div><div class="lbl">Módulos activos</div></div>
-          <div class="tele-cell"><div class="num">99.9<span class="unit">%</span></div><div class="lbl">Uptime registrado</div></div>
-          <div class="tele-cell"><div class="num">4.6<span class="unit">%</span></div><div class="lbl">Agency Risk Index™</div></div>
-          <div class="tele-cell"><div class="num">24/7<span class="unit">MON</span></div><div class="lbl">Monitoreo operativo</div></div>
-        </div>
-      </div>
-      <div class="hero-side">
-        <div class="hero-rail">
-          <div class="rail-head"><span class="pulse-dot"></span> LIVE SYSTEM STATE</div>
-          <div class="rail-item"><span class="rail-lbl">Kernel</span><span class="rail-val ok">Estable</span></div>
-          <div class="rail-item"><span class="rail-lbl">Deployments activos</span><span class="rail-val">7</span></div>
-          <div class="rail-item"><span class="rail-lbl">Última auditoría</span><span class="rail-val">02 Jul 2026</span></div>
-          <div class="rail-item"><span class="rail-lbl">Hallazgos abiertos</span><span class="rail-val ok">0</span></div>
-          <div class="rail-item"><span class="rail-lbl">Agency Risk Index™</span><span class="rail-val ok">4.6%</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ECOSYSTEM / INFRASTRUCTURE DIAGRAM -->
-  <section id="ecosystem">
-    <div class="section-inner">
-      <div class="eyebrow">Operating System</div>
-      <h2>Infrastructure Diagram™</h2>
-      <p class="section-lede">Un solo flujo gobierna cada deployment de BLACK CODE™: del cliente a la capa de crecimiento, sin saltos manuales ni dependencia de un operador externo entre etapas.</p>
-
-      <div class="arch-diagram" aria-label="Infrastructure Diagram">
-        <span>Clients</span><i>→</i>
-        <span>Channels</span><i>→</i>
-        <span>Automation</span><i>→</i>
-        <span>Intelligence</span><i>→</i>
-        <span>Operations</span><i>→</i>
-        <span>Growth</span>
-      </div>
-
-      <div class="flow">
-        <div class="flow-node">
-          <div class="idx">CLIENTS</div>
-          <h3>Punto de entrada</h3>
-          <p>Cada lead, cliente y usuario final se registra como una entidad trazable dentro del sistema, no como un contacto suelto en una hoja de cálculo.</p>
-          <div class="flow-meta">Fuente: <span style="color:var(--ink-dim)">CRM unificado</span></div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">
-          <div class="idx">CHANNELS</div>
-          <h3>Canales operados</h3>
-          <p>WhatsApp, redes, sitio, marketplace y punto de venta se conectan a un mismo bus de eventos. Ningún canal opera aislado.</p>
-          <div class="flow-meta">Módulos: <span style="color:var(--ink-dim)">5 conectores activos</span></div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">
-          <div class="idx">AUTOMATION</div>
-          <h3>Automatización</h3>
-          <p>Reglas y flujos ejecutan las tareas repetibles: seguimiento, agendado, cobranza, recordatorios. Documentadas y versionadas.</p>
-          <div class="flow-meta">Cobertura: <span style="color:var(--ink-dim)">Documentada al 100%</span></div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">
-          <div class="idx">INTELLIGENCE</div>
-          <h3>Capa de inteligencia</h3>
-          <p>Los datos generados por cada canal se procesan en reportes y modelos de decisión, no solo en dashboards estáticos.</p>
-          <div class="flow-meta">Refresco: <span style="color:var(--ink-dim)">Tiempo real</span></div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">
-          <div class="idx">OPERATIONS</div>
-          <h3>Operación diaria</h3>
-          <p>El equipo del cliente opera desde tableros propios, con permisos y accesos que no dependen de KNJO para funcionar día a día.</p>
-          <div class="flow-meta">Propiedad: <span style="color:var(--ink-dim)">Cliente, no agencia</span></div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">
-          <div class="idx">GROWTH</div>
-          <h3>Crecimiento medible</h3>
-          <p>Cada ciclo cierra con métricas de negocio verificables, alimentando la siguiente iteración del sistema.</p>
-          <div class="flow-meta">Revisión: <span style="color:var(--ink-dim)">Mensual, con el cliente</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SYSTEMS GRID / INFRASTRUCTURE -->
-  <section id="systems">
-    <div class="section-inner">
-      <div class="eyebrow">Infrastructure</div>
-      <h2>13 Módulos del Sistema</h2>
-      <p class="section-lede">Cada módulo se monta, versiona y audita de forma independiente. Un cliente puede operar con uno o con los trece, sin reescribir lo demás.</p>
-
-      <div class="systems-grid">
-        <div class="sys-card">
-          <div class="sid-row"><span class="sid">SYS-01</span><span class="role-tag">Core</span></div>
-          <h3>CRM Unificado</h3>
-          <p>Registro único de clientes, historial y estado de cada relación comercial activa.</p>
-          <div class="stat"><span class="dot"></span>Activo en 7 deployments</div>
-        </div>
-        <div class="sys-card">
-          <div class="sid-row"><span class="sid">SYS-02</span><span class="role-tag">Channels</span></div>
-          <h3>Conector Omnicanal</h3>
-          <p>Integra WhatsApp Business, Instagram, sitio web y punto de venta en un solo bus.</p>
-          <div class="stat"><span class="dot"></span>5 canales soportados</div>
-        </div>
-        <div class="sys-card">
-          <div class="sid-row"><span class="sid">SYS-03</span><span class="role-tag">Automation</span></div>
-          <h3>Motor de Flujos</h3>
-          <p>Automatiza seguimiento, recordatorios y escalamiento sin intervención manual.</p>
-          <div class="stat"><span class="dot"></span>100% documentado</div>
-        </div>
-        <div class="sys-card">
-          <div class="sid-row"><span class="sid">SYS-04</span><span class="role-tag">Intelligence</span></div>
-          <h3>Panel de Reportes</h3>
-          <p>Convierte eventos operativos en métricas de negocio accesibles para dirección.</p>
-          <div class="stat"><span class="dot"></span>Refresco en tiempo real</div>
-        </div>
-        <div class="sys-card">
-          <div class="sid-row"><span class="sid">SYS-05</span><span class="role-tag">Operations</span></div>
-          <h3>Consola Operativa</h3>
-          <p>Tablero de trabajo diario para el equipo del cliente, con permisos por rol.</p>
-          <div class="stat"><span class="dot"></span>Propiedad del cliente</div>
-        </div>
-        <div class="sys-card">
-          <div class="sid-row"><span class="sid">SYS-06</span><span class="role-tag">Security</span></div>
-          <h3>Capa de Acceso</h3>
-          <p>Autenticación, roles y bitácora de cambios sobre cada módulo del sistema.</p>
-          <div class="stat"><span class="dot"></span>Auditoría continua</div>
-        </div>
-        <div class="sys-card">
-          <div class="sid-row"><span class="sid">SYS-07</span><span class="role-tag">Data</span></div>
-          <h3>Bodega de Datos</h3>
-          <p>Almacenamiento estructurado con respaldo y trazabilidad de cada registro.</p>
-          <div class="stat"><span class="dot"></span>Respaldo diario</div>
-        </div>
-        <div class="sys-card">
-          <div class="sid-row"><span class="sid">SYS-08</span><span class="role-tag">Channels</span></div>
-          <h3>Agendado y Reservas</h3>
-          <p>Sincroniza citas, disponibilidad y confirmaciones entre canales y equipo.</p>
-          <div class="stat"><span class="dot"></span>Activo en 5 deployments</div>
-        </div>
-        <div class="sys-card">
-          <div class="sid-row"><span class="sid">SYS-09</span><span class="role-tag">Automation</span></div>
-          <h3>Cobranza Automatizada</h3>
-          <p>Recordatorios y conciliación de pagos integrados al flujo del cliente.</p>
-          <div class="stat"><span class="dot"></span>Activo en 3 deployments</div>
-        </div>
-        <div class="sys-card">
-          <div class="sid-row"><span class="sid">SYS-10</span><span class="role-tag">Intelligence</span></div>
-          <h3>Modelo de Demanda</h3>
-          <p>Proyecciones operativas a partir de histórico real, no de estimaciones sueltas.</p>
-          <div class="stat"><span class="dot"></span>En expansión</div>
-        </div>
-        <div class="sys-card">
-          <div class="sid-row"><span class="sid">SYS-11</span><span class="role-tag">Growth</span></div>
-          <h3>Atribución de Canal</h3>
-          <p>Identifica qué canal genera qué resultado, con datos propios del cliente.</p>
-          <div class="stat"><span class="dot"></span>Auditable por el cliente</div>
-        </div>
-        <div class="sys-card">
-          <div class="sid-row"><span class="sid">SYS-12</span><span class="role-tag">Operations</span></div>
-          <h3>Gestión de Incidentes</h3>
-          <p>Registro y resolución trazable de cualquier falla operativa reportada.</p>
-          <div class="stat"><span class="dot"></span>SLA documentado</div>
-        </div>
-        <div class="sys-card">
-          <div class="sid-row"><span class="sid">SYS-13</span><span class="role-tag">Core</span></div>
-          <h3>Handoff & Portabilidad</h3>
-          <p>Protocolo de entrega documentado: el cliente puede operar o migrar sin depender de KNJO.</p>
-          <div class="stat"><span class="dot"></span>Cero vendor lock-in</div>
-        </div>
-      </div>
-      <div class="org-summary"><i>Estado:</i> 13/13 módulos operativos <i>·</i> 0 hallazgos abiertos <i>·</i> Auditoría más reciente 02 Jul 2026</div>
-    </div>
-  </section>
-
-  <!-- DEPLOYMENT REGISTRY -->
-  <section id="deployments">
-    <div class="section-inner">
-      <div class="eyebrow">Deployment Registry™</div>
-      <h2>Registro de Infraestructura Desplegada</h2>
-      <p class="section-lede">Esto no es un portafolio de proyectos terminados. Es el registro vivo de cada sistema que KNJO opera, monitorea y audita activamente en producción.</p>
-
-      <div class="registry-bar">
-        <div class="rb-cell"><div class="rb-num">7</div><div class="rb-lbl">Deployments en registro</div></div>
-        <div class="rb-cell"><div class="rb-num">6</div><div class="rb-lbl">En estado LIVE</div></div>
-        <div class="rb-cell"><div class="rb-num">1</div><div class="rb-lbl">En MONITORING</div></div>
-        <div class="rb-cell"><div class="rb-num">99.9%</div><div class="rb-lbl">Uptime agregado</div></div>
-      </div>
-
-      <div class="deployments">
-        <div class="deploy-row">
-          <div class="deploy-left">
-            <span class="deploy-status">LIVE</span>
-            <div class="deploy-name">VELVER MOTOS ATLIXCO™<span>REG-2024-011 · Retail / Motos</span></div>
-          </div>
-          <div class="deploy-meta">
-            Módulos activos: <b>8/13</b><br>
-            Comisionado: <b>Mar 2024</b> · Última auditoría: <b>Jun 2026</b><br>
-            Uptime: <b>99.97%</b>
-          </div>
-        </div>
-        <div class="deploy-row">
-          <div class="deploy-left">
-            <span class="deploy-status">LIVE</span>
-            <div class="deploy-name">GRUPO NORVEK™<span>REG-2024-014 · Servicios profesionales</span></div>
-          </div>
-          <div class="deploy-meta">
-            Módulos activos: <b>6/13</b><br>
-            Comisionado: <b>Jul 2024</b> · Última auditoría: <b>May 2026</b><br>
-            Uptime: <b>99.91%</b>
-          </div>
-        </div>
-        <div class="deploy-row">
-          <div class="deploy-left">
-            <span class="deploy-status">LIVE</span>
-            <div class="deploy-name">CASA ITALCO™<span>REG-2025-002 · Retail / Hogar</span></div>
-          </div>
-          <div class="deploy-meta">
-            Módulos activos: <b>9/13</b><br>
-            Comisionado: <b>Ene 2025</b> · Última auditoría: <b>Jun 2026</b><br>
-            Uptime: <b>99.95%</b>
-          </div>
-        </div>
-        <div class="deploy-row">
-          <div class="deploy-left">
-            <span class="deploy-status monitoring">MONITORING</span>
-            <div class="deploy-name">FERRETERÍA DOMEK™<span>REG-2025-006 · Retail / Ferretero</span></div>
-          </div>
-          <div class="deploy-meta">
-            Módulos activos: <b>5/13</b><br>
-            Comisionado: <b>Abr 2025</b> · En periodo de estabilización<br>
-            Uptime: <b>99.6%</b>
-          </div>
-        </div>
-        <div class="deploy-row">
-          <div class="deploy-left">
-            <span class="deploy-status">LIVE</span>
-            <div class="deploy-name">CLÍNICA RAYVEN™<span>REG-2025-009 · Salud</span></div>
-          </div>
-          <div class="deploy-meta">
-            Módulos activos: <b>7/13</b><br>
-            Comisionado: <b>Ago 2025</b> · Última auditoría: <b>Jun 2026</b><br>
-            Uptime: <b>99.93%</b>
-          </div>
-        </div>
-        <div class="deploy-row">
-          <div class="deploy-left">
-            <span class="deploy-status">LIVE</span>
-            <div class="deploy-name">TALLER MECÁNICO OKRA™<span>REG-2025-013 · Automotriz</span></div>
-          </div>
-          <div class="deploy-meta">
-            Módulos activos: <b>6/13</b><br>
-            Comisionado: <b>Oct 2025</b> · Última auditoría: <b>May 2026</b><br>
-            Uptime: <b>99.88%</b>
-          </div>
-        </div>
-        <div class="deploy-row">
-          <div class="deploy-left">
-            <span class="deploy-status">LIVE</span>
-            <div class="deploy-name">ESTUDIO LUMBRE™<span>REG-2026-001 · Servicios creativos</span></div>
-          </div>
-          <div class="deploy-meta">
-            Módulos activos: <b>4/13</b><br>
-            Comisionado: <b>Feb 2026</b> · Última auditoría: <b>Jun 2026</b><br>
-            Uptime: <b>99.9%</b>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- KNJO LAB -->
-  <section id="lab">
-    <div class="section-inner">
-      <div class="eyebrow">KNJO Lab™</div>
-      <h2>División de Investigación y Desarrollo</h2>
-      <p class="section-lede">KNJO Lab™ es la unidad interna que prueba, mide y madura cada módulo antes de que entre al catálogo de BLACK CODE™. Nada llega a producción sin pasar primero por aquí.</p>
-
-      <div class="lab-panel">
-        <div>
-          <span class="lab-tag">R&D · Investigación aplicada</span>
-          <h3>Cómo opera el Lab</h3>
-          <p>Cada línea de investigación nace de un patrón repetido en los deployments activos: un cuello de botella, una automatización que podría generalizarse, un modelo que vale la pena probar con datos reales antes de ofrecerlo como módulo.</p>
-          <p>El Lab trabaja con datos anonimizados de los deployments que participan voluntariamente en el programa, bajo el mismo marco de gobernanza que protege a cualquier cliente del registro.</p>
-          <div class="lab-foot">3 líneas activas · 2 en fase de investigación · 1 graduada a SYS-10 este trimestre</div>
-        </div>
-        <div>
-          <div class="rail-head" style="border-bottom:1px solid var(--steel); padding-bottom:16px; margin-bottom:0;">LÍNEAS DE INVESTIGACIÓN</div>
-          <ul class="lab-list">
-            <li><span>R&D-01 · Modelo predictivo de demanda</span><span class="tag-active">ACTIVA</span></li>
-            <li><span>R&D-02 · Enrutamiento inteligente de canal</span><span class="tag-active">ACTIVA</span></li>
-            <li><span>R&D-03 · Detección temprana de churn</span><span class="tag-research">RESEARCH</span></li>
-            <li><span>R&D-04 · Automatización de cotizaciones</span><span class="tag-research">RESEARCH</span></li>
-            <li><span>R&D-05 · Atribución multi-canal (graduado a SYS-11)</span><span class="tag-active">EN CATÁLOGO</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TRUST CENTER -->
-  <section id="trust-center">
-    <div class="section-inner">
-      <div class="eyebrow">Trust Center™</div>
-      <h2>Operational, Architectural & Organisational Trust™</h2>
-      <p class="section-lede">Tres capas de confianza, auditadas de forma independiente. Cada hallazgo del BLACK CODE™ Audit Report queda registrado aquí hasta su cierre.</p>
-
-      <div class="trust-pillars">
-
-        <!-- OPERATIONAL TRUST -->
-        <div class="trust-pillar">
-          <div class="eyebrow" style="margin-bottom:0;">Operational Trust™</div>
-          <h3>Cómo se sostiene la operación</h3>
-          <p class="pillar-lede">Uptime, monitoreo y respuesta ante incidentes medidos de forma continua, no reportados solo cuando algo falla.</p>
-          <ul class="trust-bullets">
-            <li>Monitoreo 24/7</li>
-            <li>SLA documentado por módulo</li>
-            <li>Respaldo diario de datos</li>
-            <li>Bitácora de incidentes pública para el cliente</li>
-            <li>Tiempo de respuesta &lt; 2h en incidentes críticos</li>
-          </ul>
-
-          <div class="mc-grid">
-            <div class="mc-panel"><div class="mc-big">99.9<span class="unit">%</span></div><div class="lbl mono" style="margin-top:6px; font-size:10px; letter-spacing:.1em; color:var(--ink-dim); text-transform:uppercase;">Uptime agregado, 7 deployments</div></div>
-            <div class="mc-panel"><div class="mc-big">&lt;2<span class="unit">HRS</span></div><div class="lbl mono" style="margin-top:6px; font-size:10px; letter-spacing:.1em; color:var(--ink-dim); text-transform:uppercase;">Tiempo medio de respuesta</div></div>
-            <div class="mc-panel"><div class="mc-big">0</div><div class="lbl mono" style="margin-top:6px; font-size:10px; letter-spacing:.1em; color:var(--ink-dim); text-transform:uppercase;">Incidentes críticos sin resolver</div></div>
-          </div>
-          <div class="mc-log">
-            <div class="mc-log-body">
-              <div class="mc-log-line" style="animation-delay:.1s"><span class="t">14:02</span><span class="s">OK</span> Respaldo diario completado · 7/7 deployments</div>
-              <div class="mc-log-line" style="animation-delay:.2s"><span class="t">09:41</span><span class="s">OK</span> Chequeo de uptime · sin desviaciones</div>
-              <div class="mc-log-line" style="animation-delay:.3s"><span class="t">08:15</span><span class="s">OK</span> Cierre de incidente REG-2025-006 · estabilización</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ARCHITECTURAL TRUST -->
-        <div class="trust-pillar">
-          <div class="eyebrow" style="margin-bottom:0;">Architectural Trust™</div>
-          <h3>Cómo está construido el sistema</h3>
-          <p class="pillar-lede">La arquitectura sigue el mismo Infrastructure Diagram™ en cada deployment: separación clara de capas, versionado de cada cambio y control de acceso por rol.</p>
-          <div class="arch-diagram" aria-label="Architectural Trust flow">
-            <span>Clients</span><i>→</i><span>Channels</span><i>→</i><span>Automation</span><i>→</i><span>Intelligence</span><i>→</i><span>Operations</span><i>→</i><span>Growth</span>
-          </div>
-          <p class="arch-note">Cada capa se documenta y versiona de forma independiente. Un cambio en Automation no toca Intelligence sin pasar por control de versión y revisión previa. Los accesos se otorgan por rol, no por persona, y quedan registrados en la bitácora de acceso de cada módulo.</p>
-          <ul class="trust-bullets">
-            <li>Separación de capas documentada</li>
-            <li>Control de versiones en cada módulo</li>
-            <li>Acceso por rol, no por persona</li>
-            <li>Sin dependencias cruzadas no documentadas</li>
-          </ul>
-        </div>
-
-        <!-- ORGANISATIONAL TRUST -->
-        <div class="trust-pillar">
-          <div class="eyebrow" style="margin-bottom:0;">Organisational Trust™</div>
-          <h3>Quién responde y cómo</h3>
-          <p class="pillar-lede">La confianza organizacional se mide en portabilidad: qué tanto depende un cliente de KNJO para seguir operando su propio sistema.</p>
-          <ul class="trust-bullets">
-            <li>Protocolo de handoff documentado</li>
-            <li>Propiedad de datos del cliente</li>
-            <li>Cero vendor lock-in</li>
-            <li>Puntos de contacto directos, sin intermediarios</li>
-            <li>Revisión trimestral con cada cliente</li>
-          </ul>
-
-          <div class="mc-grid">
-            <div class="mc-panel">
-              <div class="mc-big risk">4.6<span class="unit">%</span></div>
-              <div class="lbl mono" style="margin-top:6px; font-size:10px; letter-spacing:.1em; color:var(--ink-dim); text-transform:uppercase;">Agency Risk Index™</div>
-              <div class="mc-delta"><span class="down">↓ 7.4 pts</span> vs. 12.0% en el audit anterior</div>
-            </div>
-            <div class="mc-panel">
-              <div class="mc-big">13/13</div>
-              <div class="lbl mono" style="margin-top:6px; font-size:10px; letter-spacing:.1em; color:var(--ink-dim); text-transform:uppercase;">Módulos con handoff documentado</div>
-            </div>
-            <div class="mc-panel">
-              <div class="mc-big">0</div>
-              <div class="lbl mono" style="margin-top:6px; font-size:10px; letter-spacing:.1em; color:var(--ink-dim); text-transform:uppercase;">Hallazgos abiertos del audit</div>
-            </div>
-          </div>
-
-          <table class="audit-table">
-            <thead>
-              <tr><th>Hallazgo del Audit Report</th><th>Acción de cierre</th><th>Estado</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Ausencia de protocolo de portabilidad por módulo</td>
-                <td>Handoff documentado para 13/13 módulos (SYS-13)</td>
-                <td class="status-ok">CERRADO</td>
-              </tr>
-              <tr>
-                <td>Falta de visibilidad de incidentes para el cliente</td>
-                <td>Bitácora de incidentes expuesta en consola operativa</td>
-                <td class="status-ok">CERRADO</td>
-              </tr>
-              <tr>
-                <td>Dependencia de accesos personales no versionados</td>
-                <td>Migración a control de acceso por rol</td>
-                <td class="status-ok">CERRADO</td>
-              </tr>
-              <tr>
-                <td>Deployment Registry™ presentado como portafolio comercial</td>
-                <td>Reestructurado como registro de infraestructura con métricas de uptime y auditoría</td>
-                <td class="status-ok">CERRADO</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT / COMMAND CHANNEL -->
-  <section id="contact">
-    <div class="section-inner">
-      <div class="eyebrow">Command Channel™</div>
-      <h2>Solicita una Auditoría de Sistemas</h2>
-      <p class="section-lede">Antes de cualquier propuesta, KNJO audita tu operación actual contra el mismo estándar del BLACK CODE™ Audit Report.</p>
-
-      <div class="terminal">
-        <div class="term-head">
-          <div class="d"></div><div class="d"></div><div class="d"></div>
-          <span>command-channel · secure</span>
-        </div>
-        <div class="term-body">
-          <div class="term-line"><span class="prompt">&gt;</span>iniciar_solicitud --tipo=auditoria</div>
-          <form>
-            <div>
-              <label for="name">Nombre</label>
-              <input id="name" type="text" placeholder="Tu nombre">
-            </div>
-            <div>
-              <label for="company">Empresa</label>
-              <input id="company" type="text" placeholder="Nombre de la empresa">
-            </div>
-            <div class="full">
-              <label for="email">Correo</label>
-              <input id="email" type="email" placeholder="tu@empresa.com">
-            </div>
-            <div class="full">
-              <label for="msg">Contexto operativo</label>
-              <textarea id="msg" placeholder="Canales que operas hoy, tamaño del equipo, principal cuello de botella..."></textarea>
-            </div>
-            <div class="full">
-              <button type="button" class="btn btn-primary">Enviar Solicitud</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<footer>
-  <div>© 2026 KNJO SYSTEMS™. Todos los derechos reservados.</div>
-  <div class="foot-links">
-    <a href="#trust-center">Trust Center™</a>
-    <a href="#deployments">Deployment Registry™</a>
-    <a href="#lab">KNJO Lab™</a>
-  </div>
-</footer>
-
-<script>
-  // Boot sequence
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('boot').classList.add('hidden');
-    }, 2400);
-  });
-
-  // Live clock
-  function updateClock(){
-    const now = new Date();
-    const hh = String(now.getHours()).padStart(2,'0');
-    const mm = String(now.getMinutes()).padStart(2,'0');
-    const ss = String(now.getSeconds()).padStart(2,'0');
-    const el = document.getElementById('clock');
-    if(el) el.textContent = `${hh}:${mm}:${ss}`;
-  }
-  updateClock();
-  setInterval(updateClock, 1000);
-
-  // Mobile nav toggle
-  const navToggle = document.getElementById('navToggle');
-  const nav = document.getElementById('nav');
-  if(navToggle){
-    navToggle.addEventListener('click', () => {
-      nav.classList.toggle('open');
-    });
-    nav.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => nav.classList.remove('open'));
-    });
-  }
-</script>
-
-</body>
-</html>
+  .trust-pillar
